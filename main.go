@@ -116,19 +116,19 @@ func login() {
 	err := db.QueryRow("SELECT password FROM user WHERE name = ?", inputName).Scan(&dbPwd)
 
 	if err == sql.ErrNoRows {
-		fmt.Println("❌ 账号不存在")
+		fmt.Println("账号不存在")
 		return
 	}
 	if err != nil {
-		fmt.Println("❌ 查询失败:", err)
+		fmt.Println("查询失败:", err)
 		return
 	}
 
 	// 4. 验证密码
 	if dbPwd == inputPwd {
-		fmt.Println("✅ 登录成功！")
+		fmt.Println("登录成功！")
 	} else {
-		fmt.Println("❌ 密码错误！")
+		fmt.Println("密码错误！")
 	}
 }
 
