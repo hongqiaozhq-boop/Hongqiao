@@ -96,22 +96,23 @@ func mysql_connect() *sql.DB {
 }
 
 func login() {
-	// 1. 获取用户输入
+	// 1. 先连接数据库
+	db := mysql_connect()
+	if db == nil {
+		fmt.Println("数据库获取失败，无法进行登录")
+		return
+	}
+	defer db.Close()
+	fmt.Println("数据库连接成功，准备登录...\n")
+
+	// 2. 获取用户输入
 	var inputName, inputPwd string
 	fmt.Print("请输入账号: ")
 	fmt.Scanln(&inputName)
 	fmt.Print("请输入密码: ")
 	fmt.Scanln(&inputPwd)
 
-	// 2. 连接数据库
-	db := mysql_connect()
-	if db == nil {
-		fmt.Println("连接失败")
-		return
-	}
-	defer db.Close()
-
-	// 3. 直接查这个账号
+	// 3. 查询账号
 	var dbPwd string
 	err := db.QueryRow("SELECT password FROM user WHERE name = ?", inputName).Scan(&dbPwd)
 
